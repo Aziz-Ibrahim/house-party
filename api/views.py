@@ -1,6 +1,14 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from rest_framework import generics
 
-# Create your views here.
-def main(request):
-    return HttpResponse("Welcome to the House Party API!")
+from .models import Room
+from .serializers import RoomSerializer
+
+
+class RoomView(generics.ListAPIView):
+    """
+    API view to create a new room.
+    Inherits from CreateAPIView to handle POST requests for creating a room.
+    """
+    queryset = Room.objects.all()
+    serializer_class = RoomSerializer
