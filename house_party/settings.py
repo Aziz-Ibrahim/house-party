@@ -38,9 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Third-party apps
+    'rest_framework',  # Django REST framework for API development
+
     # Custom apps
-    'api.apps.ApiConfig',
-    'rest_framework',
+    'api.apps.ApiConfig',  # Include the API app
+    'frontend.apps.FrontendConfig',  # Include the frontend app
 ]
 
 MIDDLEWARE = [
