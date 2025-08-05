@@ -7,24 +7,24 @@ module.exports = {
         path: path.resolve(__dirname, "./static/js"),
         filename: "[name].js",
     },
+    mode: "development", // or "production"
     module: {
-        rules: [{
-            test: /\.js$/,
-            exclude: /node_modules/,
-            use: {
-                loader: "babel-loader",
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: "babel-loader",
+                },
             },
-        }, ],
+        ],
     },
     optimization: {
         minimize: true,
     },
     plugins: [
         new webpack.DefinePlugin({
-            "process.env": {
-                // This has effect on the react lib size
-                NODE_ENV: JSON.stringify("production"),
-            },
+            "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development"),
         }),
     ],
 };
