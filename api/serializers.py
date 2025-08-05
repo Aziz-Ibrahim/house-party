@@ -20,4 +20,20 @@ class RoomSerializer(serializers.ModelSerializer):
             'votes_to_skip',
             'created_at'
         )
-        read_only_fields = ('id', 'created_at')
+
+
+class CreateRoomSerializer(serializers.ModelSerializer):
+    """
+    Serializer for creating a new room.
+    Inherits from RoomSerializer to reuse the model fields.
+    """
+    class Meta:
+        """
+        Meta class for CreateRoomSerializer.
+        Specifies the model and fields to be serialized.
+        """
+        model = Room
+        fields = (
+            'guest_can_pause',
+            'votes_to_skip'
+        )
