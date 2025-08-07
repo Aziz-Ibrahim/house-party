@@ -147,3 +147,27 @@ class UserInRoom(APIView):
             'code': self.request.session.get('room_code')
         }
         return JsonResponse(data, status=status.HTTP_200_OK)
+
+
+class LeaveRoom(APIView):
+    """
+    API view to handle leaving a room.
+    Inherits from APIView to define custom behavior for POST requests.
+    """
+    def post(self, request, format=None):
+        """
+        Handle POST request to leave a room.
+        Clears the session data related to the room and returns 
+        a 200 OK response.
+        """
+        if 'room_code' in self.request.session:
+            self.request.session.pop('room_code')
+            host_id = self.request.session.session_key
+            room_results = Room.objects.filter(host=host_id)
+            if len(room_results) == 1:
+                room = room_results[0]
+                room.delete()
+        return Response(
+            {'Message': 'Successfully left the room.'},
+            status=status.HTTP_200_OK
+        )
