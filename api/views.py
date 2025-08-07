@@ -188,7 +188,7 @@ class UpdateRoom(APIView):
         Handle PATCH request to update a room.
         Validates the request data and updates the room fields accordingly.
         """
-        if not self.request.session.exists(request.session.session_key):
+        if not self.request.session.exists(self.request.session.session_key):
             self.request.session.create()
 
         serializer = self.serializer_class(data=request.data)
