@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponse, JsonResponse
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -128,3 +129,21 @@ class CreateRoomView(APIView):
             {'Bad request': 'Invalid data provided.'},
             status=status.HTTP_400_BAD_REQUEST
         )
+    
+
+class UserInRoom(APIView):
+    """
+    API view to check if a user is in a room.
+    Inherits from APIView to define custom behavior for GET requests.
+    """
+    def get(self, request, format=None):
+        """
+        Handle GET request to check if the user is in a room.
+        Returns the room code if the user is in a room, otherwise returns 404.
+        """
+        if not self.request.session.exists(request.session.session_key):
+            self.request.session.create()
+        data = {
+            'code': self.request.session.get('room_code')
+        }
+        return JsonResponse(data, status=status.HTTP_200_OK)
