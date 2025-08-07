@@ -37,3 +37,23 @@ class CreateRoomSerializer(serializers.ModelSerializer):
             'guest_can_pause',
             'votes_to_skip'
         )
+
+
+class UpdateRoomSerializer(serializers.ModelSerializer):
+    """
+    Serializer for updating an existing room.
+    Inherits from RoomSerializer to reuse the model fields.
+    """
+    code = serializers.CharField(read_only=True, validators=[])
+    class Meta:
+        """
+        Meta class for UpdateRoomSerializer.
+        Specifies the model and fields to be serialized.
+        """
+        model = Room
+        fields = (
+            'guest_can_pause',
+            'votes_to_skip',
+            'code'
+        )
+        read_only_fields = ('id', 'host', 'created_at')
