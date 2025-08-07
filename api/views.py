@@ -48,6 +48,39 @@ class GetRoom(APIView):
         )
 
 
+class JoinRoom(APIView):
+    """
+    API view to handle joining a room.
+    Inherits from APIView to define custom behavior for POST requests.
+    """
+    lookup_url_kwarg = 'code'
+    def post(self, request, format=None):
+        """
+        Handle POST request to join a room using the provided code.
+        Validates the room code and adds the user to the room if it exists.
+        """
+        if not self.request.session.exists(request.session.session_key):
+            self.request.session.create()
+        code = request.data.get(self.lookup_url_kwarg)
+        if code != None:
+            room_result = Room.objects.filter(code=code)
+            if len(room_result) > 0:
+                room = room_result[0]
+                self.request.session['room_code'] = code
+                return Response(
+                    RoomSerializer(room).data,
+                    status=status.HTTP_200_OK
+                )
+            return Response(
+                {'Bad request': 'Invalid room code.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        return Response(
+            {'Bad request': 'Invalid data provided.'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+
 class CreateRoomView(APIView):
     """
     API view to handle room creation.
@@ -74,6 +107,7 @@ class CreateRoomView(APIView):
                 room.guest_can_pause = guests_can_pause
                 room.votes_to_skip = votes_to_skip
                 room.save(update_fields=['guest_can_pause', 'votes_to_skip'])
+                self.request.session['room_code'] = room.code
                 return Response(
                     RoomSerializer(room).data,
                     status=status.HTTP_200_OK
@@ -85,6 +119,7 @@ class CreateRoomView(APIView):
                     votes_to_skip=votes_to_skip
                 )
                 room.save()
+                self.request.session['room_code'] = room.code
             return Response(
                 RoomSerializer(room).data,
                 status=status.HTTP_201_CREATED
