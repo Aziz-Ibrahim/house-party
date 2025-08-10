@@ -7,7 +7,8 @@ from requests import Request, post
 
 from .utils import (
     get_user_tokens,
-    update_or_create_user_tokens
+    update_or_create_user_tokens,
+    is_spotify_authenticated
 )
 
 class AuthURL(APIView):
@@ -71,3 +72,21 @@ def spotify_callback(request, format=None):
     )
 
     return redirect('frontend:')
+
+
+class IsAuthenticated(APIView):
+    """
+    View to check if the user is authenticated with Spotify.
+    """
+    def get(self, request, format=None):
+        """
+        Handle GET requests to check authentication status.
+        """
+        session_id = request.session.session_key
+        is_authenticated = is_spotify_authenticated(
+            self.request.session.session_key
+        )
+        return Response(
+            {'status': is_authenticated},
+            status=status.HTTP_200_OK
+        )
