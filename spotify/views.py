@@ -19,10 +19,7 @@ class AuthURL(APIView):
         """
         Handle GET requests for authentication.
         """
-        scopes = (
-            'user-read-playback-state user-modify-playback-state'
-            'user-read-currently-playing'
-            )
+        scopes = 'user-read-playback-state user-modify-playback-state user-read-currently-playing'
         url = Request(
             'GET',
             'https://accounts.spotify.com/authorize',
