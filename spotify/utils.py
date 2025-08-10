@@ -114,3 +114,37 @@ def refresh_spotify_token(session_id):
         expires_in,
         refresh_token
     )
+
+
+def execute_spotify_api_request(
+        session_id,
+        endpoint,
+        post_=False,
+        put_=False,
+    ):
+    """
+    Execute a request to the Spotify API.
+    Args:
+        session_id (str): The session ID of the user.
+        endpoint (str): The API endpoint to call.
+        post_ (bool): Whether to use POST method.
+        put_ (bool): Whether to use PUT method.
+        put_data (dict): Data to send with PUT request.
+    Returns:
+        dict: The JSON response from the API.
+    """
+    tokens = get_user_tokens(session_id)
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': f'Bearer {tokens.access_token}'
+    }
+    if post_:
+        post(BASE_URL + endpoint, headers=headers)
+    if put_:
+        put(BASE_URL + endpoint, headers=headers)
+
+    response = get(BASE_URL + endpoint, {}, headers=headers)
+    try:
+        return response.json()
+    except:
+        return {'Error': 'Invalid response'}
