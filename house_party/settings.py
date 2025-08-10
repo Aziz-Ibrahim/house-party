@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%^8uw#-4lzu_gq58n)zy1)@l&$%r%b3&9#22wx(fn9x04%jn$$'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # Custom apps
     'api.apps.ApiConfig',  # Include the API app
     'frontend.apps.FrontendConfig',  # Include the frontend app
+    'spotify.apps.SpotifyConfig',  # Include the Spotify app
 ]
 
 MIDDLEWARE = [
@@ -127,3 +128,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Additional settings for the Spotify integration
+SPOTIFY_CLIENT_ID = os.getenv('CLIENT_ID', '')
+SPOTIFY_CLIENT_SECRET = os.getenv('CLIENT_SECRET', '')
+SPOTIFY_REDIRECT_URI = os.getenv('REDIRECT_URI', 'http://localhost:8000/callback/')
