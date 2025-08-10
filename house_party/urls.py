@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),  # Include the API URLs
     path('', include('frontend.urls')),  # Include the frontend URLs
+    path('spotify/', include('spotify.urls'))  # Include the Spotify app URLs
 ]
