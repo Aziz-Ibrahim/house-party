@@ -64,7 +64,7 @@ export default class MusicPlayer extends Component {
                                 {this.props.is_playing ? <PauseIcon /> : <PlayArrowIcon />}
                             </IconButton>
                             <IconButton onClick={() => this.skipSong()}>
-                                <SkipNextIcon />
+                                {this.props.votes} / {' '} {this.props.votes_required} Votes <SkipNextIcon />
                             </IconButton>
                         </div>
                     </Grid>
