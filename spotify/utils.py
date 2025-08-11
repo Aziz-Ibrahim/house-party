@@ -97,15 +97,14 @@ def refresh_spotify_token(session_id):
         data={
             'grant_type': 'refresh_token',
             'refresh_token': refresh_token,
-            'client_id': settings.CLIENT_ID,
-            'client_secret': settings.CLIENT_SECRET
+            'client_id': settings.SPOTIFY_CLIENT_ID,
+            'client_secret': settings.SPOTIFY_CLIENT_SECRET
         }
     ).json()
 
     access_token = response.get('access_token')
     token_type = response.get('token_type')
     expires_in = response.get('expires_in')
-    refresh_token = response.get('refresh_token')
 
     update_or_create_user_tokens(
         session_id,

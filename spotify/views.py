@@ -77,7 +77,6 @@ class IsAuthenticated(APIView):
         """
         Handle GET requests to check authentication status.
         """
-        session_id = request.session.session_key
         is_authenticated = is_spotify_authenticated(
             self.request.session.session_key
         )
@@ -85,6 +84,7 @@ class IsAuthenticated(APIView):
             {'status': is_authenticated},
             status=status.HTTP_200_OK
         )
+
 
 
 class CurrentSong(APIView):
