@@ -165,3 +165,12 @@ def pause_song(session_id):
         session_id (str): The session ID of the user.
     """
     return execute_spotify_api_request(session_id, 'player/pause', put_=True)
+
+
+def skip_song(session_id):
+    """
+    Skip the current song for the user.
+    Args:
+        session_id (str): The session ID of the user.
+    """
+    return execute_spotify_api_request(session_id, 'player/next', post_=True)

@@ -10,4 +10,5 @@ urlpatterns = [
     path('current-song', CurrentSong.as_view()),  # Get current song
     path('pause', PauseSong.as_view()),  # Pause the current song
     path('play', PlaySong.as_view()),  # Play the current song
+    path('skip', SkipSong.as_view()),  # Skip the current song
 ]

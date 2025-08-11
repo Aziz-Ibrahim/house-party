@@ -171,3 +171,27 @@ class PlaySong(APIView):
         if self.request.session.session_key == room.host or room.guest_can_pause:
             play_song(room.host)
             return Response({}, status=status.HTTP_204_NO_CONTENT)
+        return Response(
+            {'message': 'You are not allowed to play the song.'},
+            status=status.HTTP_403_FORBIDDEN
+        )
+
+
+class SkipSong(APIView):
+    """
+    View to skip the currently playing song.
+    """
+    def post(self, response, format=None):
+        """
+        Handle POST requests to skip the current song.
+        """
+        room_code = self.request.session.get('room_code')
+        room = Room.objects.filter(code=room_code)[0]
+
+        if self.request.session.session_key == room.host:
+            skip_song(room.host)
+
+        else:
+            pass
+
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
