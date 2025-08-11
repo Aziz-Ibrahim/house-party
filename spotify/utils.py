@@ -147,3 +147,21 @@ def execute_spotify_api_request(
         return response.json()
     except:
         return {'Error': 'Invalid response'}
+
+
+def play_song(session_id):
+    """
+    Play the current song for the user.
+    Args:
+        session_id (str): The session ID of the user.
+    """
+    return execute_spotify_api_request(session_id, 'player/play', put_=True)
+
+
+def pause_song(session_id):
+    """
+    Pause the current song for the user.
+    Args:
+        session_id (str): The session ID of the user.
+    """
+    return execute_spotify_api_request(session_id, 'player/pause', put_=True)
