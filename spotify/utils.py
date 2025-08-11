@@ -120,7 +120,7 @@ def execute_spotify_api_request(
         session_id,
         endpoint,
         post_=False,
-        put_=False,
+        put_=False
     ):
     """
     Execute a request to the Spotify API.
@@ -136,7 +136,7 @@ def execute_spotify_api_request(
     tokens = get_user_tokens(session_id)
     headers = {
         'Content-Type': 'application/json',
-        'Authorization': f'Bearer {tokens.access_token}'
+        'Authorization': "Bearer " + tokens.access_token
     }
     if post_:
         post(BASE_URL + endpoint, headers=headers)

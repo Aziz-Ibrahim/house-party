@@ -95,36 +95,31 @@ class CurrentSong(APIView):
         """
         Handle GET requests to retrieve the current song.
         """
-        room_code = request.session.get('room_code')
+        room_code = self.request.session.get('room_code')
         room = Room.objects.filter(code=room_code)
         if room.exists():
             room = room[0]
         else:
-            return Response(
-                {'message': 'Room not found'},
-                status=status.HTTP_404_NOT_FOUND
-            )
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
         host = room.host
-        endpoint = 'player/currently-playing'
+        endpoint = "player/currently-playing"
         response = execute_spotify_api_request(host, endpoint)
 
         if 'error' in response or 'item' not in response:
-            return Response(
-                {'message': 'No song currently playing'},
-                status=status.HTTP_204_NO_CONTENT
-            )
-        
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+
         item = response.get('item')
         duration = item.get('duration_ms')
         progress = response.get('progress_ms')
         album_cover = item.get('album').get('images')[0].get('url')
         is_playing = response.get('is_playing')
         song_id = item.get('id')
-        artist_string = ''
+
+        artist_string = ""
 
         for i, artist in enumerate(item.get('artists')):
             if i > 0:
-                artist_string += ', '
+                artist_string += ", "
             name = artist.get('name')
             artist_string += name
 
@@ -139,8 +134,4 @@ class CurrentSong(APIView):
             'id': song_id
         }
 
-
-        return Response(
-            song,
-            status=status.HTTP_200_OK
-        )
+        return Response(song, status=status.HTTP_200_OK)
